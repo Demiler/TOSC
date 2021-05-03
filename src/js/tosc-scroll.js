@@ -1,13 +1,13 @@
-import { LitElement, css, html } from 'lit-element'
-import { clamp } from './clamp.js'
+import { LitElement, css, html } from 'lit-element';
+import { clamp } from './clamp.js';
 
 class ToscScroll extends LitElement {
   static get styles() {
     return css`
       :host {
-        --red: #B02323;
-        --blue: #5523F0;
-        --green: #23B033;
+        --red: #b02323;
+        --blue: #5523f0;
+        --green: #23b033;
 
         --text-size: 35px;
 
@@ -18,7 +18,6 @@ class ToscScroll extends LitElement {
         justify-content: center;
         align-items: center;
         position: relative;
-
       }
 
       :host::before {
@@ -112,7 +111,7 @@ class ToscScroll extends LitElement {
       letter: { type: String },
       active: { type: String },
       extra: { type: Boolean },
-    }
+    };
   }
 
   constructor() {
@@ -121,14 +120,11 @@ class ToscScroll extends LitElement {
   }
 
   firstUpdated() {
-    if (this.active === undefined)
-      this.active = "blue";
-    if (this.letter === undefined)
-      this.letter = "?";
-    if (this.extra === undefined)
-      this.extra = false;
+    if (this.active === undefined) this.active = 'blue';
+    if (this.letter === undefined) this.letter = '?';
+    if (this.extra === undefined) this.extra = false;
 
-    this.scroll = this.shadowRoot.querySelector("#scroll");
+    this.scroll = this.shadowRoot.querySelector('#scroll');
 
     this.addEventListener('touchmove', this.scrolling);
 
@@ -144,7 +140,7 @@ class ToscScroll extends LitElement {
     this.addEventListener('mouseup', (e) => {
       this.isMDown = false;
       //delya cuz click is happaning a bit later
-      setTimeout(() => this.block = false, 100);
+      setTimeout(() => (this.block = false), 100);
     });
 
     this.addEventListener('mouseleave', () => {
@@ -159,8 +155,7 @@ class ToscScroll extends LitElement {
       const y = e.pageY - this.offsetTop - this.scroll.offsetTop;
       const scroll = y - this.startY;
 
-      if (Math.abs(scroll) < 10)
-        return;
+      if (Math.abs(scroll) < 10) return;
       this.block = true;
 
       const pos = clamp(this.scrollUp - scroll, this.top, this.bottom);
@@ -178,7 +173,7 @@ class ToscScroll extends LitElement {
 
     this.letSize = parseInt(getComputedStyle(this).getPropertyValue('--text-size'), 10);
     //5 cuz 3 from each letter and extra 2 from margin. And 3 cuz ther is 3 letters
-    this.blockSize = this.letSize * (5 / 3); 
+    this.blockSize = this.letSize * (5 / 3);
     this.bottom = this.scroll.offsetHeight / 2;
     this.top = 0;
 
@@ -188,21 +183,24 @@ class ToscScroll extends LitElement {
 
   render() {
     return html`
-      <div id='scroll' class=${this.extra ? 'extra' : ''}>
-        <div class='pick void'></div>
-        <div class='pick' id='red' @click=${this.chooseMe}>${this.letter}</div>
-        <div class='pick' id='blue' @click=${this.chooseMe}>${this.letter}</div>
-        <div class='pick' id='green' @click=${this.chooseMe}>${this.letter}</div>
-        <div class='pick void'></div>
+      <div id="scroll" class=${this.extra ? 'extra' : ''}>
+        <div class="pick void"></div>
+        <div class="pick" id="red" @click=${this.chooseMe}>${this.letter}</div>
+        <div class="pick" id="blue" @click=${this.chooseMe}>${this.letter}</div>
+        <div class="pick" id="green" @click=${this.chooseMe}>${this.letter}</div>
+        <div class="pick void"></div>
       </div>
-  `;
+    `;
   }
 
   letterPos(color) {
     switch (color) {
-      case "red": return 0;
-      case "blue": return 2 * this.letSize;
-      case "green": return this.bottom;
+      case 'red':
+        return 0;
+      case 'blue':
+        return 2 * this.letSize;
+      case 'green':
+        return this.bottom;
     }
   }
 
@@ -214,26 +212,24 @@ class ToscScroll extends LitElement {
   }
 
   updateValue() {
-    const newVal = ["red", "blue", "green"][this.getLetId(this.cur, 0)];
+    const newVal = ['red', 'blue', 'green'][this.getLetId(this.cur, 0)];
     if (newVal === this.active) return;
     this.active = newVal;
 
     const updateEv = new CustomEvent('update', {
       detail: { extra: this.extra, color: this.active, letter: this.letter },
       bubbles: true,
-      composed: true });
+      composed: true,
+    });
     this.dispatchEvent(updateEv);
   }
 
   //because !
   getLetId(pos, dir) {
-    const blockSize = this.letSize * 5 / 3;
-    if (pos < blockSize)
-      return 0;
-    else if (pos < 2 * blockSize)
-      return 1;
-    else
-      return 2;
+    const blockSize = (this.letSize * 5) / 3;
+    if (pos < blockSize) return 0;
+    else if (pos < 2 * blockSize) return 1;
+    else return 2;
   }
 
   updateScroll(pos) {
@@ -254,7 +250,7 @@ class ToscScroll extends LitElement {
 
   stabilize(pos, direction) {
     const letId = this.getLetId(pos, direction); //yep it is junky!
-    const stablePos = this.letterPos(["red", "blue", "green"][letId]);
+    const stablePos = this.letterPos(['red', 'blue', 'green'][letId]);
     this.updateScroll(stablePos);
     this.updateValue();
   }
