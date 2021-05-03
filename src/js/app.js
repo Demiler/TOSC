@@ -39,9 +39,6 @@ class TOSCapp extends LitElement {
         height: 100%;
         padding: 5px;
       }
-
-      tosc-list {
-      }
     `;
   }
 

@@ -1,6 +1,5 @@
 import { LitElement, css, html } from 'lit-element';
 import { hints } from './hints.js';
-import { TOSC } from './tosc.js';
 import './tosc-button.js';
 import './tosc-scroll.js';
 import './tosc-drop.js';
@@ -113,10 +112,6 @@ class TOSCcreate extends LitElement {
     };
   }
 
-  constructor() {
-    super();
-  }
-
   render() {
     return html`
       <div class="personal">
@@ -178,7 +173,7 @@ class TOSCcreate extends LitElement {
     this.requestUpdate();
   }
 
-  buttonClick(e) {
+  buttonClick() {
     const btnClkEv = new CustomEvent('button', {
       bubbles: true,
       composed: true,

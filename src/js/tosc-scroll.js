@@ -88,9 +88,6 @@ class ToscScroll extends LitElement {
         align-items: center;
       }
 
-      .pick[id] {
-      }
-
       .pick#red {
         color: var(--red);
       }
@@ -137,7 +134,7 @@ class ToscScroll extends LitElement {
       this.scrollUp = this.cur;
     });
 
-    this.addEventListener('mouseup', (e) => {
+    this.addEventListener('mouseup', () => {
       this.isMDown = false;
       //delya cuz click is happaning a bit later
       setTimeout(() => (this.block = false), 100);
@@ -162,13 +159,14 @@ class ToscScroll extends LitElement {
       this.updateScroll(pos);
 
       const letId = this.getLetId(pos);
-      if (letId != this.curLetId) {
+      if (letId !== this.curLetId) {
         this.curLetId = letId;
         this.updateValue();
       }
 
       this.stableLetter(pos);
     });
+
     /* enables dragabillity for scrolls */
 
     this.letSize = parseInt(getComputedStyle(this).getPropertyValue('--text-size'), 10);
@@ -201,6 +199,8 @@ class ToscScroll extends LitElement {
         return 2 * this.letSize;
       case 'green':
         return this.bottom;
+      default:
+        throw new Error(`Unknown color: ${color}`);
     }
   }
 
@@ -225,11 +225,11 @@ class ToscScroll extends LitElement {
   }
 
   //because !
-  getLetId(pos, dir) {
+  getLetId(pos) {
     const blockSize = (this.letSize * 5) / 3;
     if (pos < blockSize) return 0;
     else if (pos < 2 * blockSize) return 1;
-    else return 2;
+    return 2;
   }
 
   updateScroll(pos) {
@@ -237,7 +237,7 @@ class ToscScroll extends LitElement {
     this.scroll.scrollTo(0, this.cur); //Maybe add a cycle to smooth it?
   }
 
-  scrolling(e) {
+  scrolling() {
     this.cur = this.scroll.scrollTop;
     this.updateValue();
     this.stableLetter(this.cur);

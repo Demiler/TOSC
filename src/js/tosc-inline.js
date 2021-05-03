@@ -78,10 +78,6 @@ class TOSCinline extends LitElement {
     return {};
   }
 
-  constructor() {
-    super();
-  }
-
   firstUpdated() {
     if (this.tosc === undefined) this.tosc = new TOSC('BBBB');
   }

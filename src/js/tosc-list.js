@@ -1,5 +1,4 @@
 import { LitElement, css, html } from 'lit-element';
-import { TOSC } from './tosc.js';
 import './tosc-inline.js';
 
 class TOSClist extends LitElement {
@@ -19,9 +18,6 @@ class TOSClist extends LitElement {
       .me,
       .others {
         width: 90%;
-      }
-
-      .others {
       }
 
       .person {
@@ -121,10 +117,6 @@ class TOSClist extends LitElement {
       list: { type: Array },
       me: { type: Object },
     };
-  }
-
-  constructor() {
-    super();
   }
 
   render() {
